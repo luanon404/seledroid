@@ -26,3 +26,4 @@ class Command:
 	SWIPE_UP = "swipe up"
 	SET_COOKIE = "set cookie"
 	TITLE = "title"
+	WAIT_ELEMENT = "wait element"

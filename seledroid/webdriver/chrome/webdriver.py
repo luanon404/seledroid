@@ -150,8 +150,11 @@ class WebDriver(RemoteConnection):
 	def find_elements_by_css_selector(self, css_selector):
 		return self.find_elements(by=By.CSS_SELECTOR, value=css_selector)
 	
-	def find_element(self, by, value):
-		element = self.execute(Command.FIND_ELEMENT, by=by, value=value)
+	def find_element(self, by, value, command=""):
+		if command:
+			element = self.execute(Command.FIND_ELEMENT, request=command, by=by, value=value)
+		else:
+			element = self.execute(Command.FIND_ELEMENT, by=by, value=value)
 		if not element.result:
 			utils.exception(NoSuchElementException, "No element match with by=By.%s value=%s" %(by, value), self.shut_up)
 		return WebElement(self.execute, element)
@@ -176,6 +179,9 @@ class WebDriver(RemoteConnection):
 	def get_cookies(self, url=""):
 		return self.execute(Command.GET_COOKIES, request=url).result
 	
+	def implicitly_wait(self, delay):
+		time.sleep(delay)
+	
 	@property
 	def page_source(self):
 		page_source = self.execute(Command.PAGE_SOURCE).result
@@ -195,6 +201,3 @@ class WebDriver(RemoteConnection):
 	@property
 	def title(self):
 		return self.execute(Command.TITLE).result
-	
-	def implicitly_wait(self, delay):
-		time.sleep(delay)
