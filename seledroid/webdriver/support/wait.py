@@ -1,41 +1,64 @@
 import os
 import time
 import threading
+
 from seledroid.webdriver.common import utils
+from seledroid.webdriver.remote.command import Command
 
 class WebDriverWait:
 	
 	def __init__(self, driver, timeout):
 		self.driver = driver
 		self.timeout = timeout
-		self.kill = True
+		self.kill = False
+		self.result = None
 	
 	def time(self):
 		end_time = time.time() + self.timeout
 		while True:
+			if self.kill:
+				self.kill = False
+				break
 			if time.time() > end_time:
+				self.kill = True
 				utils.exception(TimeoutError, "Time out to wait element", no_exit=True)
-				if self.kill:
-					os._exit(2)
-		
+				break
+	
+	def recv_result(self, method, command):
+		self.result = method(self.driver, command)
+
 	def until(self, method):
-		threading.Thread(target=self.time, daemon=True).start()
+		time_thread = threading.Thread(target=self.time, daemon=True)
+		recv_thread = threading.Thread(target=self.recv_result, args=(method, Command.WAIT_UNTIL_ELEMENT), daemon=True)
+		time_thread.start()
+		recv_thread.start()
 		while True:
+			if self.kill or time_thread.is_alive() == False:
+				os._exit(0)
 			try:
-				value = method(self.driver)
-				if value:
-					self.kill = False
-					return value
+				result = self.result
+				if result != None:
+					if time_thread.is_alive() == True:
+						self.kill = True
+					self.result = None
+					return result
 			except Exception as ex:
 				raise ex
 	
 	def until_not(self, method):
-		threading.Thread(target=self.time, daemon=True).start()
+		time_thread = threading.Thread(target=self.time, daemon=True)
+		recv_thread = threading.Thread(target=self.recv_result, args=(method, Command.WAIT_UNTIL_NOT_ELEMENT), daemon=True)
+		time_thread.start()
+		recv_thread.start()
 		while True:
+			if self.kill or time_thread.is_alive() == False:
+				os._exit(0)
 			try:
-				value = method(self.driver)
-				if not value:
-					self.kill = False
-					return value
+				result = self.result
+				if result == True:
+					if time_thread.is_alive() == True:
+						self.kill = True
+					self.result = None
+					return result
 			except Exception as ex:
 				raise ex

@@ -1,8 +1,6 @@
+import os
 import html
 import base64
-
-from seledroid.webdriver.remote.web_element import WebElement
-from seledroid.webdriver.remote.command import Command
 
 #----------global const----------#
 no_encode_again = False
@@ -12,7 +10,7 @@ def exception(type_, msg="", shut_up=False, no_exit=False):
 	if not shut_up:
 		print("< %s :: %s >" %(type_.__name__, msg))
 	if not no_exit:
-		exit()
+		os._exit(0)
 
 def decode_data(data):
 	try:
@@ -87,35 +85,3 @@ class DictMap(dict):
 	def __delitem__(self, key):
 		super(DictMap, self).__delitem__(key)
 		del self.__dict__[key]
-
-def presence_of_element_located(locator):
-	def _predicate(driver, locator):
-		locator = driver.find_element(*locator, Command.WAIT_ELEMENT)
-		if not isinstance(locator, WebElement):
-			return False
-		return locator
-	return lambda driver: _predicate(driver, locator) # dont ask why
-
-def visibility_of_element_located(locator):
-	def _predicate(driver, locator):
-		locator = driver.find_element(*locator, Command.WAIT_ELEMENT)
-		if not isinstance(locator, WebElement):
-			return False
-		else:
-			if locator.is_displayed == True:
-				return locator
-			else:
-				return False
-	return lambda driver: _predicate(driver, locator) # dont ask why
-	
-def element_to_be_clickable(locator):
-	def _predicate(driver, locator):
-		locator = locator if isinstance(locator, WebElement) else driver.find_element(*locator, Command.WAIT_ELEMENT)
-		if not isinstance(locator, WebElement):
-			return False
-		else:
-			if locator.is_displayed == True and locator.is_disabled == False:
-				return locator
-			else:
-				return False
-	return lambda driver: _predicate(driver, locator) # dont ask why

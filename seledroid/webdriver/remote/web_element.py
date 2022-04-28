@@ -10,11 +10,11 @@ class WebElement:
 	
 	def __init__(self, execute, element):
 		self.execute = execute
-		self.command = element["command"]
-		self.by = element["by"]
-		self.value = element["value"]
-		self.result = element["result"]
-		self.element_path = element["element_path"]
+		self.command = element.command
+		self.by = element.by
+		self.value = element.value
+		self.result = element.result
+		self.element_path = element.element_path
 		self.shut_up = False
 	
 	def __repr__(self):
@@ -122,11 +122,17 @@ class WebElement:
 		return False
 	
 	def send_keys(self, keys):
-		if isinstance(keys, str):
+		if isinstance(keys, int):
+			if self.is_readonly:
+				utils.exception(InvalidElementStateException, "Element is read-only: %s" %self.result, self.shut_up)
+			return self.execute(self.command, request=Command.SEND_KEYS, keys=keys, element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
+	
+	def send_text(self, text):
+		if isinstance(text, str):
 			if self.is_readonly:
 				utils.exception(InvalidElementStateException, "Element is read-only: %s" %self.result, self.shut_up)
 			self.focus()
-			return self.execute(self.command, request=Command.SEND_KEYS, keys=keys, element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
+			return self.execute(self.command, request=Command.SEND_TEXT, keys=text, element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
 	
 	def set_value(self, keys):
 		if isinstance(keys, str):
