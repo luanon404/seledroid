@@ -26,6 +26,7 @@ class Command:
 	SWIPE_DOWN = "swipe down"
 	SWIPE_UP = "swipe up"
 	SET_COOKIE = "set cookie"
+	SET_USER_AGENT = "set user agent"
 	TITLE = "title"
 	WAIT_UNTIL_ELEMENT = "wait until element"
 	WAIT_UNTIL_NOT_ELEMENT = "wait until not element"

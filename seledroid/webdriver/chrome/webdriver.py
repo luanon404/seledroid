@@ -197,7 +197,10 @@ class WebDriver(RemoteConnection):
 	
 	def set_cookie(self, name, value, url=""):
 		return self.execute(Command.SET_COOKIE, request=url, keys=name, value=value).result
-		
+	
+	def set_user_agent(self, user_agent):
+		return  self.execute(Command.SET_USER_AGENT, keys=user_agent).result
+
 	@property
 	def title(self):
 		return self.execute(Command.TITLE).result

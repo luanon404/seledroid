@@ -4,6 +4,8 @@ Seledroid WebDriver
 Important
 ---------
 
+**All is my own build include driver**
+
 Termux support only.
 
 I use java and javascript to do the task so sometime it won't really work.
@@ -55,8 +57,29 @@ driver = webdriver.Chrome()
 driver.get("http://demo.t3-framework.org/joomla30/index.php/en/joomla-pages/sample-page-2/login-page")
 elem = driver.find_element_by_id("remember")
 elem.click()
-driver.implicitly_wait(5)
+driver.implicitly_wait(10)
 driver.close()
 ```
 
+Example 1
+---------
 
+```
+from seledroid import webdriver
+from seledroid.webdriver.common.by import By
+from seledroid.webdriver.common.keys import Keys
+driver = webdriver.Chrome()
+driver.get("https://google.com")
+elem = driver.find_element(By.NAME, "q")
+elem.send_text("seledroid")
+elem.send_keys(Keys.ENTER)
+driver.implicitly_wait(10)
+driver.close()
+```
+
+Update
+------
+
+[update 1.0.2](https://github.com/luanon404/seledroid/issues/6)
+
+[update 1.0.1](https://github.com/luanon404/seledroid/issues/3)
