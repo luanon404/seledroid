@@ -80,6 +80,8 @@ driver.close()
 Update
 ------
 
+[update 1.0.3](https://github.com/luanon404/seledroid/issues/7)
+
 [update 1.0.2](https://github.com/luanon404/seledroid/issues/6)
 
 [update 1.0.1](https://github.com/luanon404/seledroid/issues/3)

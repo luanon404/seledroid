@@ -23,6 +23,8 @@ class Command:
 	SEND_TEXT = "send text"
 	SET_VALUE = "set value"
 	SET_DISABLED = "set disabled"
+	SET_INNER_HTML = "set inner html"
+	SET_OUTER_HTML = "set outer html"
 	SWIPE_DOWN = "swipe down"
 	SWIPE_UP = "swipe up"
 	SET_COOKIE = "set cookie"

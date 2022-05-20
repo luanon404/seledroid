@@ -143,3 +143,10 @@ class WebElement:
 			return self.execute(self.command, request=Command.SET_DISABLED, keys="true", element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
 		else:
 			return self.execute(self.command, request=Command.SET_DISABLED, keys="false", element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
+	
+	def set_inner_html(self, text):
+		return self.execute(self.command, request=Command.SET_INNER_HTML, keys=text, element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
+	
+	def set_outer_html(self, text):
+		return self.execute(self.command, request=Command.SET_OUTER_HTML, keys=text, element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
+	
