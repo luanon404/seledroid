@@ -200,7 +200,11 @@ class WebDriver(RemoteConnection):
 	
 	def set_user_agent(self, user_agent):
 		return  self.execute(Command.SET_USER_AGENT, keys=user_agent).result
-
+	
+	def set_proxy(self, host, port):
+		proxy = host + ":" + str(port)
+		return  self.execute(Command.SET_PROXY, keys=proxy).result
+		
 	@property
 	def title(self):
 		return self.execute(Command.TITLE).result

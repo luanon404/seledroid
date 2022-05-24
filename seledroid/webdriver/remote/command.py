@@ -29,6 +29,7 @@ class Command:
 	SWIPE_UP = "swipe up"
 	SET_COOKIE = "set cookie"
 	SET_USER_AGENT = "set user agent"
+	SET_PROXY = "set proxy"
 	TITLE = "title"
 	WAIT_UNTIL_ELEMENT = "wait until element"
 	WAIT_UNTIL_NOT_ELEMENT = "wait until not element"
