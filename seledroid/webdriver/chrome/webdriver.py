@@ -99,6 +99,10 @@ class WebDriver(RemoteConnection):
 	def clear_cookies(self):
 		return self.execute(Command.CLEAR_COOKIES).result
 	
+	def click_java(self, x, y):
+		pos = str(x) + " " + str(y)
+		return self.execute(Command.CLICK_JAVA, keys=pos).result 
+	
 	def execute_script(self, script):
 		return self.execute(Command.EXECUTE_SCRIPT, script=script).result
 	

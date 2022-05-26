@@ -23,13 +23,18 @@ class WebElement:
 	#----------function----------#
 	
 	def click(self):
-		return self.execute(self.command, request=Command.CLICK, element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
+		return self.execute(self.command, request=Command.CLICK, element_path=self.element_path, by=self.by, value=self.value).result
+	
+	def click_java(self):
+		x, y = self.get_position()
+		pos = str(x) + " " + str(y)
+		return self.execute(Command.CLICK_JAVA, keys=pos).result
 	
 	def clear(self):
-		return self.execute(self.command, request=Command.CLEAR, element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
+		return self.execute(self.command, request=Command.CLEAR, element_path=self.element_path, by=self.by, value=self.value).result
 	
 	def focus(self):
-		return self.execute(self.command, request=Command.FOCUS, element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
+		return self.execute(self.command, request=Command.FOCUS, element_path=self.element_path, by=self.by, value=self.value).result
 
 	def find_element_by_id(self, id_):
 		return self.find_element(by=By.ID, value=id_)
@@ -99,21 +104,30 @@ class WebElement:
 	def get_attribute(self, name):
 		if name == "class":
 			name = "className"
-		return self.execute(self.command, request=Command.GET_ATTRIBUTE, keys=name, element_path=self.element_path, by=self.by, value=self.value).result or "" # i dont know
+		return self.execute(self.command, request=Command.GET_ATTRIBUTE, keys=name, element_path=self.element_path, by=self.by, value=self.value).result
 	
 	def get_height(self):
-		return self.execute(self.command, request=Command.GET_HEIGHT, element_path=self.element_path, by=self.by, value=self.value).result or 0 # i dont know
+		return self.execute(self.command, request=Command.GET_HEIGHT, element_path=self.element_path, by=self.by, value=self.value).result or 0 # default
 	
 	def get_width(self):
-		return self.execute(self.command, request=Command.GET_WIDTH, element_path=self.element_path, by=self.by, value=self.value).result or 0 # i dont know
+		return self.execute(self.command, request=Command.GET_WIDTH, element_path=self.element_path, by=self.by, value=self.value).result or 0 # default
+	
+	def get_inner_html(self):
+		return self.execute(self.command, request=Command.GET_INNER_HTML, element_path=self.element_path, by=self.by, value=self.value).result
+	
+	def get_outer_html(self):
+		return self.execute(self.command, request=Command.GET_OUTER_HTML, element_path=self.element_path, by=self.by, value=self.value).result
+	
+	def get_position(self):
+		return self.execute(self.command, request=Command.GET_POSITION, element_path=self.element_path, by=self.by, value=self.value).result.split()
 	
 	@property
 	def is_disabled(self):
-		return self.execute(self.command, request=Command.IS_DISABLED, element_path=self.element_path, by=self.by, value=self.value).result or False # i dont know
+		return self.execute(self.command, request=Command.IS_DISABLED, element_path=self.element_path, by=self.by, value=self.value).result
 	
 	@property
 	def is_readonly(self):
-		return self.execute(self.command, request=Command.IS_READ_ONLY, element_path=self.element_path, by=self.by, value=self.value).result or False # i dont know
+		return self.execute(self.command, request=Command.IS_READ_ONLY, element_path=self.element_path, by=self.by, value=self.value).result
 	
 	@property
 	def is_displayed(self):
@@ -125,28 +139,31 @@ class WebElement:
 		if isinstance(keys, int):
 			if self.is_readonly:
 				utils.exception(InvalidElementStateException, "Element is read-only: %s" %self.result, self.shut_up)
-			return self.execute(self.command, request=Command.SEND_KEYS, keys=keys, element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
+			return self.execute(self.command, request=Command.SEND_KEYS, keys=keys, element_path=self.element_path, by=self.by, value=self.value).result
 	
 	def send_text(self, text):
 		if isinstance(text, str):
 			if self.is_readonly:
 				utils.exception(InvalidElementStateException, "Element is read-only: %s" %self.result, self.shut_up)
 			self.focus()
-			return self.execute(self.command, request=Command.SEND_TEXT, keys=text, element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
+			return self.execute(self.command, request=Command.SEND_TEXT, keys=text, element_path=self.element_path, by=self.by, value=self.value).result
 	
 	def set_value(self, keys):
 		if isinstance(keys, str):
-			return self.execute(self.command, request=Command.SET_VALUE, keys=keys, element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
+			return self.execute(self.command, request=Command.SET_VALUE, keys=keys, element_path=self.element_path, by=self.by, value=self.value).result
 	
 	def set_disabled(self, value):
 		if value:
-			return self.execute(self.command, request=Command.SET_DISABLED, keys="true", element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
+			return self.execute(self.command, request=Command.SET_DISABLED, keys="true", element_path=self.element_path, by=self.by, value=self.value).result
 		else:
-			return self.execute(self.command, request=Command.SET_DISABLED, keys="false", element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
+			return self.execute(self.command, request=Command.SET_DISABLED, keys="false", element_path=self.element_path, by=self.by, value=self.value).result
+	
+	def set_attribute(self, by, value):
+		return self.execute(self.command, request=Command.SET_ATTRIBUTE, keys=by, keys_value=value, element_path=self.element_path, by=self.by, value=self.value).result
 	
 	def set_inner_html(self, text):
-		return self.execute(self.command, request=Command.SET_INNER_HTML, keys=text, element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
+		return self.execute(self.command, request=Command.SET_INNER_HTML, keys=text, element_path=self.element_path, by=self.by, value=self.value).result
 	
 	def set_outer_html(self, text):
-		return self.execute(self.command, request=Command.SET_OUTER_HTML, keys=text, element_path=self.element_path, by=self.by, value=self.value).result or True # i dont know
+		return self.execute(self.command, request=Command.SET_OUTER_HTML, keys=text, element_path=self.element_path, by=self.by, value=self.value).result
 	

@@ -13,7 +13,7 @@ def presence_of_element_located(locator):
 				return True
 			else:
 				return locator
-	return lambda driver, command: _predicate(driver, locator, command) # dont ask why
+	return lambda driver, command: _predicate(driver, locator, command)
 
 def visibility_of_element_located(locator):
 	def _predicate(driver, locator, command):
@@ -29,7 +29,7 @@ def visibility_of_element_located(locator):
 				return locator
 			else:
 				return False
-	return lambda driver, command: _predicate(driver, locator, command) # dont ask why
+	return lambda driver, command: _predicate(driver, locator, command)
 	
 def element_to_be_clickable(locator):
 	def _predicate(driver, locator, command):
@@ -46,4 +46,4 @@ def element_to_be_clickable(locator):
 				return locator
 			else:
 				return False
-	return lambda driver, command: _predicate(driver, locator, command) # dont ask why
+	return lambda driver, command: _predicate(driver, locator, command)

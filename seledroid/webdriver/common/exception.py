@@ -12,3 +12,6 @@ class InvalidElementStateException(WebDriverException):
 
 class ApplicationClosed(WebDriverException):
 	pass
+
+class UnexpectedTagNameException(WebDriverException):
+	pass
