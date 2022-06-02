@@ -63,7 +63,7 @@ driver = webdriver.Chrome()
 driver.get("http://demo.t3-framework.org/joomla30/index.php/en/joomla-pages/sample-page-2/login-page")
 elem = driver.find_element_by_id("remember")
 elem.click()
-driver.implicitly_wait(10)
+driver.wait(10)
 driver.close()
 ```
 
@@ -79,7 +79,7 @@ driver.get("https://google.com")
 elem = driver.find_element(By.NAME, "q")
 elem.send_text("seledroid")
 elem.send_keys(Keys.ENTER)
-driver.implicitly_wait(10)
+driver.wait(10)
 driver.close()
 ```
 
