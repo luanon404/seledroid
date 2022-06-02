@@ -31,7 +31,7 @@ class Select:
 		utils.exception(NoSuchElementException, "No options are selected")
 	
 	def select_by_value(self, value):
-		css = "option[value=%s]" %value
+		css = "option[value='%s']" %value
 		opts = self._element.find_elements(By.CSS_SELECTOR, css)
 		matched = False
 		for opt in opts:
@@ -52,7 +52,7 @@ class Select:
 	def select_by_visible_text(self, text):
 		matched = False
 		for opt in self.options:
-			if opt.get_inner_html() == text:
+			if opt.inner_html == text:
 				self._set_selected(opt)
 				if not self.is_multiple:
 					return
@@ -70,7 +70,7 @@ class Select:
 		if not self.is_multiple:
 			utils.exception(NotImplementedError, "You may only deselect options of a multi-select")
 		matched = False
-		css = "option[value=%s]" %value
+		css = "option[value='%s']" %value
 		opts = self._element.find_elements(By.CSS_SELECTOR, css)
 		for opt in opts:
 			self._unset_selected(opt)
@@ -92,7 +92,7 @@ class Select:
 			utils.exception(NotImplementedError, "You may only deselect options of a multi-select")
 		matched = False
 		for opt in self.options:
-			if opt.get_inner_html() == text:
+			if opt.inner_html == text:
 				self._set_selected(opt)
 				if not self.is_multiple:
 					return

@@ -8,23 +8,24 @@ from seledroid.webdriver.common import utils
 from seledroid.webdriver.common.by import By
 from seledroid.webdriver.remote.command import Command
 from seledroid.webdriver.remote.web_element import WebElement
-from seledroid.webdriver.common.exception import NoSuchElementException, NoSuchPageSourceException, ApplicationClosed
+from seledroid.webdriver.common.exception import NoSuchElementException, ApplicationClosed
 from seledroid.webdriver.remote.remote_connection import RemoteConnection
 
 class WebDriver(RemoteConnection):
 	
-	def __init__(self, gui=True, accept_time_out=60, recv_time_out=60*60):
+	def __init__(self, gui=True, lang="en", accept_time_out=60, recv_time_out=60*60):
 		super(WebDriver, self).__init__(accept_time_out=accept_time_out)
 		self.encode_req = lambda data, encode=True: ("%s\n" %utils.DictMap(data)).encode() if encode else "%s\n" %data
 		self.gui = gui
 		self.shut_up = False
 		data = self.encode_req({
 			"command": Command.INIT,
+			"lang": lang,
 			"host": self.host,
 			"port": self.port
 		}, False)
 		if self.gui:
-			os.system(self.command("start", "com.luanon.chromium/.MainActivity", data))
+			os.system(self.command("start", "com.luanon.chromium/.SplashActivity", data))
 		else:
 			os.system(self.command("startservice", "com.luanon.chromium/.MainService", data))
 		try:
@@ -45,9 +46,7 @@ class WebDriver(RemoteConnection):
 		return "am %s -n %s -d '%s' > /dev/null" %(action, name, data)
 	
 	def check_result(self, commnad, recv):
-		#print("\033[1;32m%s\033[1;0m" %recv)
 		data = utils.DictMap(json.loads(recv), "no_encode_again")
-		#print("\033[1;33m%s\033[1;0m" %data)
 		if commnad == data.command:
 			return data
 	
@@ -93,17 +92,22 @@ class WebDriver(RemoteConnection):
 	def current_url(self):
 		return self.execute(Command.CURRENT_URL).result
 	
-	def clear_cookie(self, name, url=""):
-		return self.execute(Command.CLEAR_COOKIE, request=url, keys=name).result
+	def clear_cookie(self, cookie_name, url=""):
+		return self.execute(Command.CLEAR_COOKIE, url=url, cookie_name=cookie_name).result
 	
-	def clear_cookies(self):
-		return self.execute(Command.CLEAR_COOKIES).result
+	def clear_cookies(self, url=""):
+		return self.execute(Command.CLEAR_COOKIES, url=url).result
 	
 	def click_java(self, x, y):
-		pos = str(x) + " " + str(y)
-		return self.execute(Command.CLICK_JAVA, keys=pos).result 
+		position = "%f %f" %(x, y)
+		return self.execute(Command.CLICK_JAVA, position=position).result 
+	
+	def delete_all_cookie(self):
+		return self.execute(Command.DELETE_ALL_COOKIE).result
 	
 	def execute_script(self, script):
+		if not self.current_url: # need web loaded to execute script
+			return
 		return self.execute(Command.EXECUTE_SCRIPT, script=script).result
 	
 	def find_element_by_id(self, id_):
@@ -160,7 +164,8 @@ class WebDriver(RemoteConnection):
 		else:
 			element = self.execute(Command.FIND_ELEMENT, by=by, value=value)
 		if not element.result:
-			utils.exception(NoSuchElementException, "No element match with by=By.%s value=%s" %(by, value), self.shut_up)
+			if not self.shut_up:
+				utils.exception(NoSuchElementException, "No element match with by=By.%s value=%s" %(by, value))
 		return WebElement(self.execute, element)
 	
 	def find_elements(self, by, value):
@@ -169,7 +174,7 @@ class WebDriver(RemoteConnection):
 		for element in elements.result:
 			data = utils.DictMap(elements) # copy
 			data.command = Command.FIND_ELEMENT
-			data.element_path = "%s[%s]" %(elements.element_path, element[0])
+			data.path = "%s[%s]" %(elements.path, element[0])
 			data.result = element[1]
 			result.append(WebElement(self.execute, data))
 		return result
@@ -177,21 +182,32 @@ class WebDriver(RemoteConnection):
 	def get(self, url):
 		return self.execute(Command.GET, url=url).result
 	
-	def get_cookie(self, name, url=""):
-		return self.execute(Command.GET_COOKIE, request=url, keys=name).result
+	def get_cookie(self, cookie_name, url=""):
+		return self.execute(Command.GET_COOKIE, url=url, cookie_name=cookie_name).result
 	
 	def get_cookies(self, url=""):
-		return self.execute(Command.GET_COOKIES, request=url).result
+		return self.execute(Command.GET_COOKIES, url=url).result
 	
-	def implicitly_wait(self, delay):
-		time.sleep(delay)
+	@property
+	def headers(self):
+		return self.execute(Command.GET_HEADERS).result
+	
+	@headers.setter
+	def headers(self, headers):
+		headers = {key.title(): value for key, value in headers.items()}
+		return self.execute(Command.SET_HEADERS, headers=json.dumps(headers)).result
+	
+	def override_js_function(self, script):
+		return self.execute(Command.OVERRIDE_JS_FUNCTION, script=script).result
 	
 	@property
 	def page_source(self):
 		page_source = self.execute(Command.PAGE_SOURCE).result
-		if not page_source:
-			utils.exception(NoSuchPageSourceException, "If you get this error please report me on github", self.shut_up)
 		return page_source
+	
+	def swipe(self, xStart, yStart, xEnd, yEnd, speed=1):
+		position = "%f %f %f %f" %(xStart, yStart, xEnd, yEnd)
+		return self.execute(Command.SWIPE, position=position, speed=speed).result
 	
 	def swipe_down(self):
 		return self.execute(Command.SWIPE_DOWN).result
@@ -199,16 +215,28 @@ class WebDriver(RemoteConnection):
 	def swipe_up(self):
 		return self.execute(Command.SWIPE_UP).result
 	
-	def set_cookie(self, name, value, url=""):
-		return self.execute(Command.SET_COOKIE, request=url, keys=name, value=value).result
+	def set_cookie(self, cookie_name, value, url=""):
+		return self.execute(Command.SET_COOKIE, url=url, cookie_name=cookie_name, value=value).result
 	
-	def set_user_agent(self, user_agent):
-		return  self.execute(Command.SET_USER_AGENT, keys=user_agent).result
+	@property
+	def user_agent(self):
+		return self.execute(Command.GET_USER_AGENT).result
+	
+	@user_agent.setter
+	def user_agent(self, user_agent):
+		return  self.execute(Command.SET_USER_AGENT, user_agent=user_agent).result
 	
 	def set_proxy(self, host, port):
-		proxy = host + ":" + str(port)
-		return  self.execute(Command.SET_PROXY, keys=proxy).result
+		proxy = "%s %s" %(host, port)
+		return  self.execute(Command.SET_PROXY, proxy=proxy).result
+	
+	def scroll_to(self, x, y):
+		position = "%d %d" %(x, y)
+		return self.execute(Command.SCROLL_TO, position=position).result
 		
 	@property
 	def title(self):
 		return self.execute(Command.TITLE).result
+	
+	def wait(self, delay):
+		return time.sleep(delay)

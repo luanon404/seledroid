@@ -6,9 +6,8 @@ import base64
 no_encode_again = False
 #----------global const----------#
 
-def exception(type_, msg="", shut_up=False, no_exit=False):
-	if not shut_up:
-		print("< %s :: %s >" %(type_.__name__, msg))
+def exception(type_, msg="", no_exit=False):
+	print("< %s :: %s >" %(type_.__name__, msg))
 	if not no_exit:
 		os._exit(0)
 
@@ -27,7 +26,7 @@ def b64encode(value):
 
 def b64decode(value):
 	value = value.encode() if type(value) == str else ("%s" %value).encode()
-	result = decode_data(base64.b64decode(value))
+	result = decode_data(base64.b64decode(value)).replace("\r", "\\r").replace("\n", "\\n")
 	try:
 		if result in ["null", "undefined"]:
 			result = None
