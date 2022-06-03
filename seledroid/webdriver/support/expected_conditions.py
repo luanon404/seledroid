@@ -9,7 +9,7 @@ def presence_of_element_located(locator):
 		if not isinstance(locator, WebElement):
 			return False
 		else:
-			if locator.result == True:
+			if locator.element.result == True:
 				return True
 			else:
 				return locator
@@ -23,7 +23,7 @@ def visibility_of_element_located(locator):
 		if not isinstance(locator, WebElement):
 			return False
 		else:
-			if locator.result == True:
+			if locator.element.result == True:
 				return True
 			elif locator.is_displayed == True:
 				return locator
@@ -40,9 +40,9 @@ def element_to_be_clickable(locator):
 		if not isinstance(locator, WebElement):
 			return False
 		else:
-			if locator.result == True:
+			if locator.element.result == True:
 				return True
-			elif locator.is_displayed == True and locator.is_disabled == False:
+			elif locator.is_displayed == True and locator.disabled == False:
 				return locator
 			else:
 				return False

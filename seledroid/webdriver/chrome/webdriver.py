@@ -33,6 +33,7 @@ class WebDriver(RemoteConnection):
 			self.client_accept.settimeout(recv_time_out)
 		except TimeoutError:
 			utils.exception(TimeoutError, "Could not connect chrome webdriver")
+		self.get("https://google.com")
 	
 	def __enter__(self):
 		return self

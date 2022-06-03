@@ -1,7 +1,10 @@
 Seledroid WebDriver
 ======================
 
-###### I dont know how to create document
+Support
+-------
+
+Telegram: [here](https://t.me/seledroid)
 
 Important
 ---------
@@ -85,6 +88,8 @@ driver.close()
 
 Update
 ------
+
+[update 1.0.7](https://github.com/luanon404/seledroid/issues/14)
 
 [update 1.0.6](https://github.com/luanon404/seledroid/issues/13)
 

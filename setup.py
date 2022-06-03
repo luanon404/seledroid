@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
 	name="seledroid",
-	version="1.0.6",
+	version="1.0.7",
 	description="simple python module to control browser but for android",
 	long_description=open("readme.md", "r").read(),
 	long_description_content_type="text/markdown",

@@ -36,12 +36,10 @@ class WebDriverWait:
 			if self.kill or time_thread.is_alive() == False:
 				os._exit(0)
 			try:
-				result = self.result
-				if result != None:
+				if self.result:
 					if time_thread.is_alive() == True:
 						self.kill = True
-					self.result = None
-					return result
+					return self.result
 			except Exception as ex:
 				raise ex
 	
@@ -54,11 +52,9 @@ class WebDriverWait:
 			if self.kill or time_thread.is_alive() == False:
 				os._exit(0)
 			try:
-				result = self.result
-				if result == True:
+				if self.result:
 					if time_thread.is_alive() == True:
 						self.kill = True
-					self.result = None
-					return result
+					return None
 			except Exception as ex:
 				raise ex
