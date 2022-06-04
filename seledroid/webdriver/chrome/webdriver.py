@@ -101,7 +101,10 @@ class WebDriver(RemoteConnection):
 	
 	def click_java(self, x, y):
 		position = "%f %f" %(x, y)
-		return self.execute(Command.CLICK_JAVA, position=position).result 
+		return self.execute(Command.CLICK_JAVA, position=position).result
+	
+	def clear_local_storage(self):
+		return self.execute(Command.CLEAR_LOCAL_STORAGE).result
 	
 	def delete_all_cookie(self):
 		return self.execute(Command.DELETE_ALL_COOKIE).result
@@ -189,6 +192,20 @@ class WebDriver(RemoteConnection):
 	def get_cookies(self, url=""):
 		return self.execute(Command.GET_COOKIES, url=url).result
 	
+	def get_local_storage(self):
+		"""break utils.DictMap because its risk"""
+		result = dict(self.execute(Command.GET_LOCAL_STORAGE).result) # convert to dict because if there is value like .keys so can't use .keys()
+		return dict(zip(result.keys(), result.values()))
+	
+	def get_recaptcha_v3_token(self, action=""):
+		site_key = ""
+		try:
+			site_key = self.find_element(By.CSS_SELECTOR, "script[src*=\"https://www.google.com/recaptcha/api.js?render=\"]")
+		except Exception:
+			return None
+		site_key = site_key.get_attribute("src").replace("https://www.google.com/recaptcha/api.js?render=", "")
+		return self.execute(Command.GET_RECAPTCHA_V3_TOKEN, site_key=site_key, action=action).result
+	
 	@property
 	def headers(self):
 		return self.execute(Command.GET_HEADERS).result
@@ -219,14 +236,6 @@ class WebDriver(RemoteConnection):
 	def set_cookie(self, cookie_name, value, url=""):
 		return self.execute(Command.SET_COOKIE, url=url, cookie_name=cookie_name, value=value).result
 	
-	@property
-	def user_agent(self):
-		return self.execute(Command.GET_USER_AGENT).result
-	
-	@user_agent.setter
-	def user_agent(self, user_agent):
-		return  self.execute(Command.SET_USER_AGENT, user_agent=user_agent).result
-	
 	def set_proxy(self, host, port):
 		proxy = "%s %s" %(host, port)
 		return  self.execute(Command.SET_PROXY, proxy=proxy).result
@@ -234,6 +243,18 @@ class WebDriver(RemoteConnection):
 	def scroll_to(self, x, y):
 		position = "%d %d" %(x, y)
 		return self.execute(Command.SCROLL_TO, position=position).result
+	
+	def set_local_storage(self, key, value, is_string=True):
+		is_string = "true" if is_string else "false"
+		return self.execute(Command.SET_LOCAL_STORAGE, key=key, value=value, is_string=is_string).result 
+	
+	@property
+	def user_agent(self):
+		return self.execute(Command.GET_USER_AGENT).result
+	
+	@user_agent.setter
+	def user_agent(self, user_agent):
+		return  self.execute(Command.SET_USER_AGENT, user_agent=user_agent).result
 		
 	@property
 	def title(self):
