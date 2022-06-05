@@ -81,13 +81,15 @@ driver = webdriver.Chrome()
 driver.get("https://google.com")
 elem = driver.find_element(By.NAME, "q")
 elem.send_text("seledroid")
-elem.send_keys(Keys.ENTER)
+elem.send_key(Keys.ENTER)
 driver.wait(10)
 driver.close()
 ```
 
 Update
 ------
+
+[update 1.0.9](https://github.com/luanon404/seledroid/issues/16)
 
 [update 1.0.8](https://github.com/luanon404/seledroid/issues/15)
 

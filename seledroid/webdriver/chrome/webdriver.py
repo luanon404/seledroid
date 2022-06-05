@@ -13,7 +13,7 @@ from seledroid.webdriver.remote.remote_connection import RemoteConnection
 
 class WebDriver(RemoteConnection):
 	
-	def __init__(self, gui=True, lang="en", accept_time_out=60, recv_time_out=60*60):
+	def __init__(self, gui=True, lang="en", debug=False, accept_time_out=60, recv_time_out=60*60):
 		super(WebDriver, self).__init__(accept_time_out=accept_time_out)
 		self.encode_req = lambda data, encode=True: ("%s\n" %utils.DictMap(data)).encode() if encode else "%s\n" %data
 		self.gui = gui
@@ -21,6 +21,7 @@ class WebDriver(RemoteConnection):
 		data = self.encode_req({
 			"command": Command.INIT,
 			"lang": lang,
+			"debug": ("true" if debug else "false"),
 			"host": self.host,
 			"port": self.port
 		}, False)
@@ -105,6 +106,9 @@ class WebDriver(RemoteConnection):
 	
 	def clear_local_storage(self):
 		return self.execute(Command.CLEAR_LOCAL_STORAGE).result
+	
+	def clear_session_storage(self):
+		return self.execute(Command.CLEAR_SESSION_STORAGE).result
 	
 	def delete_all_cookie(self):
 		return self.execute(Command.DELETE_ALL_COOKIE).result
@@ -197,6 +201,11 @@ class WebDriver(RemoteConnection):
 		result = dict(self.execute(Command.GET_LOCAL_STORAGE).result) # convert to dict because if there is value like .keys so can't use .keys()
 		return dict(zip(result.keys(), result.values()))
 	
+	def get_session_storage(self):
+		"""break utils.DictMap because its risk"""
+		result = dict(self.execute(Command.GET_SESSION_STORAGE).result) # convert to dict because if there is value like .keys so can't use .keys()
+		return dict(zip(result.keys(), result.values()))
+	
 	def get_recaptcha_v3_token(self, action=""):
 		site_key = ""
 		try:
@@ -246,7 +255,11 @@ class WebDriver(RemoteConnection):
 	
 	def set_local_storage(self, key, value, is_string=True):
 		is_string = "true" if is_string else "false"
-		return self.execute(Command.SET_LOCAL_STORAGE, key=key, value=value, is_string=is_string).result 
+		return self.execute(Command.SET_LOCAL_STORAGE, key=key, value=value, is_string=is_string).result
+	
+	def set_session_storage(self, key, value, is_string=True):
+		is_string = "true" if is_string else "false"
+		return self.execute(Command.SET_SESSION_STORAGE, key=key, value=value, is_string=is_string).result
 	
 	@property
 	def user_agent(self):
