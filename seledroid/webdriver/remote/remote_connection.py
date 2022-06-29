@@ -1,5 +1,5 @@
 import socket
-
+import random
 
 class RemoteConnection(socket.socket):
 	
@@ -10,11 +10,16 @@ class RemoteConnection(socket.socket):
 		self.max_listen = 128
 		self.max_recv = 4096
 		self.host = "127.0.0.1"
-		self.port = 5000
+		self.port = random.randint(1000, 9999)
 		
 		self.init_socket_server()
 	
 	def init_socket_server(self):
 		self.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		self.bind((self.host, self.port))
+		while True:
+			try:
+				self.bind((self.host, self.port))
+				break
+			except OSError:
+				self.port = random.randint(1000, 9999)
 		self.listen(self.max_listen)

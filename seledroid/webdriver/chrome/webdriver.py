@@ -13,13 +13,14 @@ from seledroid.webdriver.remote.remote_connection import RemoteConnection
 
 class WebDriver(RemoteConnection):
 	
-	def __init__(self, gui=True, lang="en", debug=False, accept_time_out=60, recv_time_out=60*60):
+	def __init__(self, gui=True, pip_mode=False, lang="en", debug=False, accept_time_out=60, recv_time_out=60*60):
 		super(WebDriver, self).__init__(accept_time_out=accept_time_out)
 		self.encode_req = lambda data, encode=True: ("%s\n" %utils.DictMap(data)).encode() if encode else "%s\n" %data
 		self.gui = gui
 		self.shut_up = False
 		data = self.encode_req({
 			"command": Command.INIT,
+			"pip_mode": ("true" if pip_mode else "false"),
 			"lang": lang,
 			"debug": ("true" if debug else "false"),
 			"host": self.host,
