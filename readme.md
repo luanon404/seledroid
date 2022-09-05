@@ -1,6 +1,11 @@
 Seledroid WebDriver
 ======================
 
+Stop update
+-----------
+
+I really want to upgrade it but my current knowledge doesn't allow it, this is 100% my self build, I hope you guys like it, thanks for visiting :)
+
 Support
 -------
 
