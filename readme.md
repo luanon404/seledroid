@@ -1,9 +1,11 @@
-Seledroid Remote Driver
+Seledroid Remote WebDriver
 ======================
 
 Stop update
 -----------
-You can join my [telegram group](https://t.me/RHToolCommunity) to follow me making a webdriver uwu.
+
+You can join my [telegram group](https://t.me/RHToolCommunity) to see me make a new webdriver uwu. [This is beta, full of bugs]
+
 I really want to upgrade it but my current knowledge doesn't allow it, this is 100% my self build, I hope you guys like it, just use this code to continue, its free, thanks :)
 
 Welcome
@@ -65,7 +67,7 @@ Installing
 Drivers
 -------
 
-You can download driver at [here](https://github.com/luanon404/android-drivers).
+You can download driver at [here](https://github.com/luanon404/android-webdrivers).
 
 Example 0
 ---------
