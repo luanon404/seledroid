@@ -1,4 +1,4 @@
-Seledroid WebDriver
+Seledroid Remote Driver
 ======================
 
 Stop update
