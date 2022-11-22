@@ -3,13 +3,18 @@ Seledroid WebDriver
 
 Stop update
 -----------
-
+You can join my [telegram group](https://t.me/RHToolCommunity) to follow me making a webdriver uwu.
 I really want to upgrade it but my current knowledge doesn't allow it, this is 100% my self build, I hope you guys like it, just use this code to continue, its free, thanks :)
+
+Welcome
+-------
+
+Hi i'm luanon404, i'm the first one to do this crazy thing :], have you ever thought about running selenium on your phone? I guess I'm the only one who thinks that :D, that's how this library is made, enjoy it.
 
 Support
 -------
 
-Telegram: [here](https://t.me/seledroid)
+Telegram: [here](https://t.me/RHToolCommunity)
 
 Important
 ---------
@@ -60,7 +65,7 @@ Installing
 Drivers
 -------
 
-You can download driver at [here](https://github.com/luanon404/seledroid-drivers).
+You can download driver at [here](https://github.com/luanon404/android-drivers).
 
 Example 0
 ---------
@@ -90,26 +95,3 @@ elem.send_key(Keys.ENTER)
 driver.wait(10)
 driver.close()
 ```
-
-Update
-------
-
-[update 1.1.0](https://github.com/luanon404/seledroid/issues/19)
-
-[update 1.0.9](https://github.com/luanon404/seledroid/issues/16)
-
-[update 1.0.8](https://github.com/luanon404/seledroid/issues/15)
-
-[update 1.0.7](https://github.com/luanon404/seledroid/issues/14)
-
-[update 1.0.6](https://github.com/luanon404/seledroid/issues/13)
-
-[update 1.0.5](https://github.com/luanon404/seledroid/issues/11)
-
-[update 1.0.4](https://github.com/luanon404/seledroid/issues/9)
-
-[update 1.0.3](https://github.com/luanon404/seledroid/issues/7)
-
-[update 1.0.2](https://github.com/luanon404/seledroid/issues/6)
-
-[update 1.0.1](https://github.com/luanon404/seledroid/issues/3)
