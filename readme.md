@@ -8,7 +8,7 @@ You can join my [telegram group](https://t.me/RHToolCommunity) to see me make a 
 
 I really want to upgrade it but my current knowledge doesn't allow it, this is 100% my self build, I hope you guys like it, just use this code to continue, its free, thanks :)
 
-Update
+News
 ------
 
 For someone want to use real selenium, follow this tutorial [Selenium-On-Termux-Android](https://github.com/luanon404/Selenium-On-Termux-Android).
@@ -72,7 +72,7 @@ Installing
 Drivers
 -------
 
-You can download driver at [here](https://github.com/luanon404/android-webdrivers).
+You can download driver at [here](https://github.com/luanon404/android-webdrivers/tree/main/Apk-Android-WebDrivers/Chromium).
 
 Example 0
 ---------
