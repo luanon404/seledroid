@@ -1,1 +1,1 @@
-Project moved to https://github.com/luanon404/luanon.
+Project has moved to the [luanon](https://github.com/luanon404/luanon) project.
