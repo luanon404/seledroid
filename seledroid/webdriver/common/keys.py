@@ -1,2 +1,3 @@
 class Keys:
-	ENTER = 66
+    ENTER = 66
+    TAB = 61
