@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="seledroid",
-    version="2.0.3",
+    version="2.0.4",
     description="Android WebDriver based WebView",
     long_description=open(join(abspath(dirname(__file__)), "README.md")).read(),
     long_description_content_type="text/markdown",

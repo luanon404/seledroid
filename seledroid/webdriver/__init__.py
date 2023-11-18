@@ -11,6 +11,7 @@ def remove_deprecation_warning():
     open(__file__, "w").write(origin)
 
 
+warnings.simplefilter("always", DeprecationWarning)
 warnings.warn("""
 - This project has been **deprecated** and has moved to https://github.com/luanon404/luanon.
 - To remove a deprecated warning noise, run the following code once:
